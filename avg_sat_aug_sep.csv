@@ -1,0 +1,41 @@
+﻿day_of_week_no,day_of_week_name,month_name,month_order,station_id,station_name,member_casual,avg_rides
+6,Saturday,August,11,13008,Millennium Park,casual,393
+6,Saturday,August,11,13008,Millennium Park,member,73
+6,Saturday,August,11,13022,Streeter Dr & Grand Ave,casual,1021
+6,Saturday,August,11,13022,Streeter Dr & Grand Ave,member,191
+6,Saturday,August,11,13042,Michigan Ave & Oak St,casual,602
+6,Saturday,August,11,13042,Michigan Ave & Oak St,member,177
+6,Saturday,August,11,13179,Clark St & Lincoln Ave,casual,373
+6,Saturday,August,11,13179,Clark St & Lincoln Ave,member,235
+6,Saturday,August,11,13300,DuSable Lake Shore Dr & Monroe St,casual,447
+6,Saturday,August,11,13300,DuSable Lake Shore Dr & Monroe St,member,159
+6,Saturday,August,11,15544,Shedd Aquarium,casual,347
+6,Saturday,August,11,15544,Shedd Aquarium,member,61
+6,Saturday,August,11,KA1504000135,Wells St & Elm St,casual,294
+6,Saturday,August,11,KA1504000135,Wells St & Elm St,member,211
+6,Saturday,August,11,LF-005,DuSable Lake Shore Dr & North Blvd,casual,657
+6,Saturday,August,11,LF-005,DuSable Lake Shore Dr & North Blvd,member,256
+6,Saturday,August,11,TA1308000001,Theater on the Lake,casual,434
+6,Saturday,August,11,TA1308000001,Theater on the Lake,member,199
+6,Saturday,August,11,TA1308000050,Wells St & Concord Ln,casual,410
+6,Saturday,August,11,TA1308000050,Wells St & Concord Ln,member,270
+6,Saturday,September,12,13008,Millennium Park,casual,437
+6,Saturday,September,12,13008,Millennium Park,member,80
+6,Saturday,September,12,13022,Streeter Dr & Grand Ave,casual,1005
+6,Saturday,September,12,13022,Streeter Dr & Grand Ave,member,185
+6,Saturday,September,12,13042,Michigan Ave & Oak St,casual,422
+6,Saturday,September,12,13042,Michigan Ave & Oak St,member,139
+6,Saturday,September,12,13146,Clark St & Armitage Ave,casual,267
+6,Saturday,September,12,13146,Clark St & Armitage Ave,member,165
+6,Saturday,September,12,13179,Clark St & Lincoln Ave,casual,300
+6,Saturday,September,12,13179,Clark St & Lincoln Ave,member,201
+6,Saturday,September,12,13300,DuSable Lake Shore Dr & Monroe St,casual,397
+6,Saturday,September,12,13300,DuSable Lake Shore Dr & Monroe St,member,129
+6,Saturday,September,12,15544,Shedd Aquarium,casual,303
+6,Saturday,September,12,15544,Shedd Aquarium,member,63
+6,Saturday,September,12,LF-005,DuSable Lake Shore Dr & North Blvd,casual,350
+6,Saturday,September,12,LF-005,DuSable Lake Shore Dr & North Blvd,member,131
+6,Saturday,September,12,TA1308000001,Theater on the Lake,casual,252
+6,Saturday,September,12,TA1308000001,Theater on the Lake,member,150
+6,Saturday,September,12,TA1308000050,Wells St & Concord Ln,casual,324
+6,Saturday,September,12,TA1308000050,Wells St & Concord Ln,member,235

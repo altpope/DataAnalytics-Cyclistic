@@ -1,0 +1,343 @@
+---
+title: "Cyclistic Casual vs Member Rides over One Year"
+author: "Alex Popescu"
+date: "19/10/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Business Overview
+
+Cyclistic is a bike-hire company in Chicago with 5824 bicycles and 692 docking stations. Bikes are mainly used for leisure but 30% are used to commute. The company products are a **Member** (annual membership) and a **Casual** (either a day-pass or pay-per-ride) types of subscriptions.
+
+## Project Goal
+
+There is a management plan to bring more **Casual** riders into the **Member** category. The current project intends to look at the ride patterns among **Member** and **Casual** riders over one year  to support an effective marketing campaign.
+
+## Data Analysis
+
+To get a better understanding of bike usage patterns, we decided to consider two patterns, a monthly pattern trough the year and the day-of-week pattern.
+
+#### Load R packages used for data analysis and vizualisation
+
+This report is produced from an R Markdown script file.
+
+```{r libraries, message=FALSE}
+library(tidyverse)
+library(scales)
+library(knitr)
+```
+
+
+```{r data, message=FALSE, echo=FALSE}
+# Load data and set up working environment
+
+rawdata <- read_csv("one_year_cycleride_data.csv")
+
+day_names <- rawdata %>% 
+  arrange(day_of_week_no) %>% 
+  distinct(day_of_week_name)
+
+month_names <- rawdata %>% 
+  arrange(month_order) %>% 
+  distinct(rawdata$month_name)
+
+
+two_colours <- c("casual" = "#FC766AFF", "member"="#5B84B1FF")
+two_colourselectricmember <- c("electric_bike" = "red", "docked_bike" ="#5B84B1FF")
+two_colourselectriccasual <- c("electric_bike" = "red", "docked_bike" ="#FC766AFF")
+```
+
+### Bike usage through the last year
+
+Cyclistic is becoming more popular over the last 12 months. The number of rides has increased significantly over the period. There is a drop in number of rides through the analysed period which coincides with the winter months, but than it recovered strongly during the more cycling friendly seasons. It is worth noting that the summer holiday months of July and August have seen the biggest number of rides. 
+
+```{r monthlyrides, message=FALSE, echo=FALSE, out.width="90%"}
+
+all_rides_monthly <- rawdata %>% 
+  group_by(month_name, month_order) %>% 
+  summarise(rides= sum(rides)) %>% 
+  arrange(month_order)
+
+all_rides_monthly %>% 
+  ggplot(mapping = aes(x= month_name, y= rides)) +
+  geom_bar(stat = "identity", fill = "deepskyblue4") +
+  theme(axis.text.x = element_text(angle = 45, size = 14, face = "bold"), axis.text.y= element_text(size = 12, face = "bold"),axis.title =element_text(size= 14, face= "bold")) +
+  scale_x_discrete(limits=  unlist(month_names)) +
+  scale_y_continuous(labels = label_number_si()) +
+  labs(y= "Rides", x = "Month") +
+  ggtitle("Monthly Rides Oct 2020 - Sep 2021")
+```
+
+### Bike usage through the week
+
+Cyclistic bikes are more popular at weekends with Saturdays having the highest number of rides during the week.
+
+```{r dailyrides, message=FALSE, echo=FALSE, out.width="90%"}
+rides_daily <- rawdata %>% 
+  group_by(day_of_week_name, day_of_week_no) %>% 
+  summarise(rides= sum(rides)) %>% 
+  arrange(day_of_week_no)
+
+rides_daily %>% 
+  ggplot(mapping = aes(x= day_of_week_name, y= rides)) +
+  geom_bar(stat = "identity", fill = "deepskyblue4") +
+  theme(axis.text.x = element_text(angle = 45, size = 14, face = "bold"), axis.text.y= element_text(size = 12, face = "bold"),axis.title =element_text(size= 14, face= "bold")) +
+  scale_x_discrete(limits=  unlist(day_names)) +
+  scale_y_continuous(labels = label_number_si()) +
+  labs(y= "Rides", x = "Week Day") +
+  ggtitle("Daily Rides Oct 2020 - Sep 2021")
+
+```
+
+### **Casual** rides increase during summer holidays
+
+**Casual** riders used Cyclistic more than **Member** riders through the holiday months of June, July and August but the **Member** usage is consistent higher during the rest of year.
+
+```{r monthly, message=FALSE, echo=FALSE, out.width="90%"}
+split_monthly_rides <- rawdata %>% 
+  group_by(month_name, month_order, member_casual ) %>% 
+  summarise(rides= sum(rides)) %>% 
+  arrange(month_order)
+
+split_monthly_rides %>% 
+  ggplot(mapping = aes(x= month_name, y= rides, fill= member_casual)) +
+  geom_bar(stat = "identity", width = 0.6,  position = "dodge") +
+  theme(axis.text.x = element_text(angle = 45, size = 14, face = "bold"), axis.text.y= element_text(size = 12, face = "bold"),axis.title =element_text(size= 14, face= "bold")) +
+  scale_x_discrete(limits=  unlist(month_names)) +
+  scale_y_continuous(labels = label_number_si()) +
+  scale_fill_manual(values = two_colours) +
+  labs(y= "Rides", x = "Month", fill="User Type") +
+  ggtitle("Monthly Rides Oct 2020 - Sep 2021")
+
+```
+
+### **Casual** rides increase during weekends
+
+**Casual** rides outnumber **Member** rides at the weekend, with Saturday being by far the most popular riding day. Number of **Member** rides are relatively consistent throughout the week.
+
+```{r daily, message=FALSE, echo=FALSE, out.width="90%"}
+split_daily_rides <- rawdata %>% 
+  group_by(day_of_week_name, day_of_week_no, member_casual) %>% 
+  summarise(rides= sum(rides)) %>% 
+  arrange(day_of_week_no)
+
+split_daily_rides %>% 
+  ggplot(mapping = aes(x= day_of_week_name, y= rides, fill= member_casual)) +
+  #geom_bar(stat = "identity", width = 0.4, position = position_dodge(width = 0.5)) +
+  geom_bar(stat= "identity", width = 0.8,  position= "dodge") +
+  theme(axis.text.x = element_text(angle = 45, size = 14, face = "bold"), axis.text.y= element_text(size = 12, face = "bold"),axis.title =element_text(size= 14, face= "bold")) +
+  scale_x_discrete(limits=  unlist(day_names)) +
+  scale_y_continuous(labels = label_number_si()) +
+  scale_fill_manual(values = two_colours) +
+  labs(y= "Rides", x = "Week Day", fill="User Type") +
+  ggtitle("Daily Rides Oct 2020 - Sep 2021")
+```
+
+### Most popular Cyclistic stations on a Wednesday (mid-week)
+
+To support a potential localised marketing campaign targeting **Casual** riders, we looked at the average bike usage in a mid-week day (Wednesday) during a holiday month (August) vs a non-holiday month (September). We picked up the top 10 Cyclistic stations used by **Casual** riders on the two days we analysed. There is a consistent number of stations that are more popular with **Casual*8 riders, whereas other stations usage is more seasonal.
+
+```{r wed_aug_sep, message=FALSE, echo=FALSE,  out.width="90%"}
+wed_aug_sep_avg <- read_csv("avg_wed_aug_sep.csv")
+wed_aug_sep_avg$month_name <- as.factor(wed_aug_sep_avg$month_name)
+
+wed_aug_sep_avg  %>% 
+  ggplot(mapping = aes(x= station_name, y= avg_rides,  fill= member_casual)) +
+  #geom_bar(stat = "identity", width = 0.4, position = position_dodge(width = 0.5)) +
+  geom_bar(stat= "identity", width = 0.8,  position= "dodge") +
+  coord_flip() +
+  facet_wrap(month_name ~ .) +
+  theme(axis.text.x = element_text(angle = 45, size = 14, face = "bold"), axis.text.y= element_text(size = 12, face = "bold"),axis.title =element_text(size= 14, face= "bold"), plot.title = element_text(hjust = 0.7)) +
+  scale_y_continuous(labels = label_number_si()) +
+  scale_fill_manual(values = two_colours) +
+  labs(y= "Average Rides per Day", x = "Top 10 Cyclistic Stations", fill="User Type") +
+  ggtitle("Top 10 stations for average Wednesday rides (work day) in August vs September")
+```
+
+### Most popular Cyclistic stations on a Saturday (week-end)
+
+To support a potential localised marketing campaign targeting **Casual riders**, we looked at the average bike usage in a weekend day (Saturday) during a holiday month (August) vs a non-holiday month (September). We picked up the top 10 Cyclistic stations used by **Casual** riders on the two days we analysed. The weekend most popular stations are consistent throughout, whether the month is a holiday month or not, which again indicated a strong **Casual** bike use for recreational purposes.
+
+```{r sat_aug_sep, message=FALSE, echo=FALSE, out.width="90%"}
+sat_aug_sep_avg <- read_csv("avg_sat_aug_sep.csv")
+sat_aug_sep_avg$month_name <- as.factor(sat_aug_sep_avg$month_name)
+
+sat_aug_sep_avg %>% 
+  ggplot(mapping = aes(x= station_name, y= avg_rides,  fill= member_casual)) +
+  #geom_bar(stat = "identity", width = 0.4, position = position_dodge(width = 0.5)) +
+  geom_bar(stat= "identity", width = 0.8,  position= "dodge") +
+  coord_flip() +
+  facet_wrap(month_name ~ .) +
+  theme(axis.text.x = element_text(angle = 45, size = 14, face = "bold"), axis.text.y= element_text(size = 12, face = "bold"),axis.title =element_text(size= 14, face= "bold"), plot.title = element_text(hjust = 0.7)) +
+  # scale_x_discrete(limits=  unlist(day_names)) +
+  scale_y_continuous(labels = label_number_si()) +
+  scale_fill_manual(values = two_colours) +
+  labs(y= "Average Rides per Day", x = "Cyclistic Stations", fill="User Type") +
+  ggtitle("Top 10 stations for average Saturday rides (weekend) in August vs  September")
+```
+
+## **Minor insights**
+
+### Electic vs Classic bike usage
+
+The 12 months data we analysed contains information about the type of bike used for a ride, electric or docked bike. We looked to see if the preference for electric bikes could entice **Casual** users to become members. Our findings show that electric bikes have a consistent appeal throughout the year and the same through the week, whether it is used by a **Member** or a **Casual** rider.
+
+### **Casual** use of electic bikes
+
+```{r casual_electric, message=FALSE,  echo=FALSE, out.width="90%"}
+electric_casual_monthly <- rawdata %>% 
+  group_by(month_name, month_order, member_casual, rideable_type ) %>% 
+  filter(member_casual == "casual") %>% 
+  summarise(rides= sum(rides)) %>% 
+  arrange(month_order)
+
+electric_casual_monthly %>% 
+  ggplot(mapping = aes(x= month_name, y= rides, fill= rideable_type)) +
+  geom_bar(stat = "identity", width = 0.6,  position = "dodge") +
+  theme(axis.text.x = element_text(angle = 45, size = 14, face = "bold"), axis.text.y= element_text(size = 12, face = "bold"),axis.title =element_text(size= 14, face= "bold")) +
+  scale_x_discrete(limits=  unlist(month_names)) +
+  scale_y_continuous(labels = label_number_si()) +
+  scale_fill_manual(values = two_colourselectriccasual) +
+  labs(y= "Rides", x = "Month", fill="Bike Type") +
+  ggtitle("Electric vs Clasic Bike Casual Monthly Rides Oct 2020 - Sep 2021")
+
+electric_casual_daily <- rawdata %>% 
+  group_by(day_of_week_name, day_of_week_no, member_casual, rideable_type ) %>% 
+  filter(member_casual == "casual") %>% 
+  summarise(rides= sum(rides)) %>% 
+  arrange(day_of_week_no)
+
+electric_casual_daily %>% 
+  ggplot(mapping = aes(x= day_of_week_name, y= rides, fill= rideable_type)) +
+  #geom_bar(stat = "identity", width = 0.4, position = position_dodge(width = 0.5)) +
+  geom_bar(stat= "identity", width = 0.8,  position= "dodge") +
+  theme(axis.text.x = element_text(angle = 45, size = 14, face = "bold"), axis.text.y= element_text(size = 12, face = "bold"),axis.title =element_text(size= 14, face= "bold")) +
+  scale_x_discrete(limits=  unlist(day_names)) +
+  scale_y_continuous(labels = label_number_si()) +
+  scale_fill_manual(values = two_colourselectriccasual) +
+  labs(y= "Rides", x = "Week Day", fill="User Type") +
+  ggtitle("Electric vs Classic Casual Daily Rides Oct 2020 - Sep 2021")
+
+```
+
+### **Member** use of electic bikes
+
+```{r member_electric, message=FALSE, echo=FALSE, out.width="90%"}
+electric_member_monthly <- rawdata %>% 
+  group_by(month_name, month_order, member_casual, rideable_type ) %>% 
+  filter(member_casual == "member") %>% 
+  summarise(rides= sum(rides)) %>% 
+  arrange(month_order)
+
+electric_member_monthly %>% 
+  ggplot(mapping = aes(x= month_name, y= rides, fill= rideable_type)) +
+  geom_bar(stat = "identity", width = 0.6,  position = "dodge") +
+  theme(axis.text.x = element_text(angle = 45, size = 14, face = "bold"), axis.text.y= element_text(size = 12, face = "bold"),axis.title =element_text(size= 14, face= "bold")) +
+  scale_x_discrete(limits=  unlist(month_names)) +
+  scale_y_continuous(labels = label_number_si()) +
+  scale_fill_manual(values = two_colourselectricmember) +
+  labs(y= "Rides", x = "Month", fill="Bike Type") +
+  ggtitle("Electric vs Clasic Bike Members Monthly Rides Oct 2020 - Sep 2021")
+
+electric_member_daily <- rawdata %>% 
+  group_by(day_of_week_name, day_of_week_no, member_casual, rideable_type ) %>% 
+  filter(member_casual == "member") %>% 
+  summarise(rides= sum(rides)) %>% 
+  arrange(day_of_week_no)
+
+electric_member_daily %>% 
+  ggplot(mapping = aes(x= day_of_week_name, y= rides, fill= rideable_type)) +
+  #geom_bar(stat = "identity", width = 0.4, position = position_dodge(width = 0.5)) +
+  geom_bar(stat= "identity", width = 0.8,  position= "dodge") +
+  theme(axis.text.x = element_text(angle = 45, size = 14, face = "bold"), axis.text.y= element_text(size = 12, face = "bold"),axis.title =element_text(size= 14, face= "bold")) +
+  scale_x_discrete(limits=  unlist(day_names)) +
+  scale_y_continuous(labels = label_number_si()) +
+  scale_fill_manual(values = two_colourselectricmember) +
+  labs(y= "Rides", x = "Week Day", fill="User Type") +
+  ggtitle("Electric vs Classic Member Daily Rides Oct 2020 - Sep 2021")
+```
+
+### Even more minor insights: Bike rides duration and its impact on bike availablility
+
+```{r calculations, results='hide', echo=FALSE}
+duration_binned_data <- rawdata %>% 
+  group_by(Bin) %>% 
+  summarise(bin_rides = sum(rides))
+total_rides <- sum(duration_binned_data$bin_rides)
+up_to_one_hour <- duration_binned_data[[1,2]]
+up_to_two_hour <- duration_binned_data[[2,2]]
+up_to_1_hour_perc <- up_to_one_hour * 100/total_rides
+up_to_2_hour_perc <- up_to_two_hour * 100/total_rides
+```
+
+
+During data cleaning, we noticed that the majority of rides are up to 1 hour long, `r format(up_to_1_hour_perc, digits=4)`%, and rides between 1 and 2 hours relatively small, `r format(up_to_2_hour_perc, digits= 3)`%. This indicated that the out layers do not have much power to skew the analysis but it made us  curious of how many really long rides occurred during the period under test. So we decided to look at rides of at least 2 days duration and also calculate the total number of ride days for each category.  
+
+```{r manydaysrides, message=FALSE, echo=FALSE, results='hide'}
+
+over_2_days <- read_csv('over_two_days_rides.csv')
+
+equiv_days_rides <-  over_2_days %>% 
+  mutate(ride_days_total = duration_in_days*rides_count)
+kable(equiv_days_rides)
+
+```
+
+```{r long_rides_calculations, message=FALSE, results='hide', echo=FALSE}
+bike_use_a_day <- total_rides/5824/365
+over_2_days_rides <- sum(over_2_days$rides_count)
+equiv_rides_total <- sum(equiv_days_rides$ride_days_total)
+wasted_rides <- (bike_use_a_day * equiv_rides_total) - over_2_days_rides
+wested_perc <- wasted_rides * 100. / total_rides
+```
+
+We found that over one year there were `r format(total_rides, scientific= FALSE)` recorded rides done with the stock of 5824 bikes, which means that a bike has been used `r format(bike_use_a_day, digits=2)` times a day.  
+Looking again at the rides longer than 2 days, `r over_2_days_rides` rides have stopped (`r format(bike_use_a_day, digits=2)` * `r equiv_rides_total`) - `r over_2_days_rides` = `r format(wasted_rides, scientific= FALSE, digits=0)` average rides. While this number looks big, the reality is that it represents only `r format(wested_perc, digits=2)`% of total rides over the year.  
+*Conclusion:* while not relevant to the present study, stakeholders might consider useful to look into these long rides and find out why they occur - technical issues?  
+
+## Data Analysis Process
+
+### Asking the questions
+
+This analysis is the result of a Case Study proposed by*[Google Data Analytics Professional Certificate Scholarship](https://www.coursera.org/professional-certificates/google-data-analytics?utm_source=gg&utm_medium=sem&utm_campaign=15-GoogleDataAnalytics-ROW&utm_content=15-GoogleDataAnalytics-ROW&campaignid=12566515400&adgroupid=117869292845&device=c&keyword=google%20data%20analytics%20certification&matchtype=p&network=g&devicemodel=&adpostion=&creativeid=507290840621&hide_mobile_promo&gclid=CjwKCAjw_L6LBhBbEiwA4c46uoNy6l3Qyjx_dysUvO_MKFROVy2rfWwBwDm0aKPe5heXCiEpO4dYsRoClFQQAvD_BwE) as part of my final presentation.  
+
+### Preparing data
+
+Data was organised in one .csv file per month. Data is relative big, over 5 million records in total. As neither Google Sheets or Excel could cope with this amount of data, I created a database in my local SQL server and imported each month .csv file in it's own table. I have considered BigQuery, but data required extra storage space than what I am allowed as part of the 30 day free trial.  
+
+The tools used for this project are Microsoft SQL Server and  Microsoft SQL Server Management Studio for data processing, Microsoft Excel and R Studio Desktop for data analysis and visualization.  
+
+### Processing data
+
+I streamlined the data by removing the longitude and latitude columns. To each record I added couple of processed data like ride duration, month name and month order in dataset, day of week name and day of week order number.
+
+During data cleaning, I removed all the rides that had negative or zero duration.
+
+I created a number of aggregated csv files from exporting the result of aggregation queries.
+
+The aggregated data used for analysis are:
+
+* one_year_cycleride_data.csv - contains one year aggregated data for hourly duration bins (25), month, day, type of ride, rider type (member or casual), number of rides
+
+* avg_wed_aug_sep.csv - contains average number of rides on a Wednesday for August and September at top 10 most popular docking station with Casual riders for each month
+
+* avg_sat_aug_sep.csv - contains average number of rides on a Saturday for August and September at top 10 most popular docking station with Casual riders for each month
+
+* over_two_days_rides.csv - contains rides over two hours long binned by number of days.  
+
+### Data analysis
+
+Microsoft Excel was used for quick prototyping of data plotting before moving into R Studio Desktop and use the tidyverse package for analysis  
+
+### Sharing the results
+
+Once all the insights were learnt, a HTML report has been prepared to share the insights using R Markdown language to present this document.
+
+All the data and scripting have been uploaded to my [GitHub](https://github.com/altpope/DataAnalytics_Cyclistic).
+
+
+

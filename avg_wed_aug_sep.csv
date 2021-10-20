@@ -1,0 +1,41 @@
+﻿day_of_week_no,day_of_week_name,month_name,month_order,station_id,station_name,member_casual,avg_rides
+3,Wednesday,August,11,13008,Millennium Park,casual,169
+3,Wednesday,August,11,13008,Millennium Park,member,62
+3,Wednesday,August,11,13022,Streeter Dr & Grand Ave,casual,433
+3,Wednesday,August,11,13022,Streeter Dr & Grand Ave,member,137
+3,Wednesday,August,11,13042,Michigan Ave & Oak St,casual,178
+3,Wednesday,August,11,13042,Michigan Ave & Oak St,member,113
+3,Wednesday,August,11,13300,DuSable Lake Shore Dr & Monroe St,casual,147
+3,Wednesday,August,11,13300,DuSable Lake Shore Dr & Monroe St,member,69
+3,Wednesday,August,11,15544,Shedd Aquarium,casual,146
+3,Wednesday,August,11,15544,Shedd Aquarium,member,59
+3,Wednesday,August,11,KA1504000135,Wells St & Elm St,casual,146
+3,Wednesday,August,11,KA1504000135,Wells St & Elm St,member,162
+3,Wednesday,August,11,LF-005,DuSable Lake Shore Dr & North Blvd,casual,322
+3,Wednesday,August,11,LF-005,DuSable Lake Shore Dr & North Blvd,member,215
+3,Wednesday,August,11,TA1307000039,Clark St & Elm St,casual,124
+3,Wednesday,August,11,TA1307000039,Clark St & Elm St,member,192
+3,Wednesday,August,11,TA1308000001,Theater on the Lake,casual,135
+3,Wednesday,August,11,TA1308000001,Theater on the Lake,member,139
+3,Wednesday,August,11,TA1308000050,Wells St & Concord Ln,casual,144
+3,Wednesday,August,11,TA1308000050,Wells St & Concord Ln,member,198
+3,Wednesday,September,12,13008,Millennium Park,casual,105
+3,Wednesday,September,12,13008,Millennium Park,member,53
+3,Wednesday,September,12,13022,Streeter Dr & Grand Ave,casual,248
+3,Wednesday,September,12,13022,Streeter Dr & Grand Ave,member,108
+3,Wednesday,September,12,13042,Michigan Ave & Oak St,casual,119
+3,Wednesday,September,12,13042,Michigan Ave & Oak St,member,111
+3,Wednesday,September,12,13146,Clark St & Armitage Ave,casual,104
+3,Wednesday,September,12,13146,Clark St & Armitage Ave,member,156
+3,Wednesday,September,12,13179,Clark St & Lincoln Ave,casual,121
+3,Wednesday,September,12,13179,Clark St & Lincoln Ave,member,142
+3,Wednesday,September,12,15544,Shedd Aquarium,casual,110
+3,Wednesday,September,12,15544,Shedd Aquarium,member,45
+3,Wednesday,September,12,KA1504000135,Wells St & Elm St,casual,110
+3,Wednesday,September,12,KA1504000135,Wells St & Elm St,member,175
+3,Wednesday,September,12,LF-005,DuSable Lake Shore Dr & North Blvd,casual,223
+3,Wednesday,September,12,LF-005,DuSable Lake Shore Dr & North Blvd,member,205
+3,Wednesday,September,12,TA1307000039,Clark St & Elm St,casual,111
+3,Wednesday,September,12,TA1307000039,Clark St & Elm St,member,195
+3,Wednesday,September,12,TA1308000050,Wells St & Concord Ln,casual,118
+3,Wednesday,September,12,TA1308000050,Wells St & Concord Ln,member,186
