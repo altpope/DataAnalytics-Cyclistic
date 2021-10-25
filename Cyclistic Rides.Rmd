@@ -337,7 +337,7 @@ Microsoft Excel was used for quick prototyping of data plotting before moving in
 
 Once all the insights were learnt, a HTML report has been prepared to share the insights using R Markdown language to present this document.
 
-All the data and scripting have been uploaded to my [GitHub](https://github.com/altpope/DataAnalytics_Cyclistic).
+All the data and scripting have been uploaded to my [GitHub](https://github.com/altpope/DataAnalytics-Cyclistic).
 
 
 
