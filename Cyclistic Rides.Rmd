@@ -307,7 +307,7 @@ This analysis is the result of a Case Study proposed by*[Google Data Analytics P
 
 ### Preparing data
 
-Data was organised in one .csv file per month. Data is relative big, over 5 million records in total. As neither Google Sheets or Excel could cope with this amount of data, I created a database in my local SQL server and imported each month .csv file in it's own table. I have considered BigQuery, but data required extra storage space than what I am allowed as part of the 30 day free trial.  
+Data was organised in one .csv file per month. Data is relative big, over 5 million records in total. As neither Google Sheets or Excel could cope with this amount of data, I created a database in my local SQL server and imported each month .csv file in its own table. I have considered BigQuery, but data required extra storage space than what I am allowed as part of the 30 day free trial.  
 
 The tools used for this project are Microsoft SQL Server and  Microsoft SQL Server Management Studio for data processing, Microsoft Excel and R Studio Desktop for data analysis and visualization.  
 
